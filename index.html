@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api Tester</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <!-- CSS styling -->
+    <link rel="stylesheet" href="headerFooter.css">
+    <link rel="stylesheet" href="apiOptions.css">
+    <!-- Axios module -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 1.Header section -->
+
+    <!-- Title section -->
+    <h1 class="title">Api-Tester</h1>
+    <p>Simple Api testing tool , a simpler clone of Postman</p>
+
+    <!-- Endpoint input field -->
+    <form id="apiForm">
+        <div class="api-input-container">
+            <select class="form-select api-req-type" id="apireq_type">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+            </select>
+            <input type="text" name="apireq_endpoint" id="apireq_endpoint" class="api-endpoint" placeholder="Enter api endpoint">
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </div>
+
+
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="params-tab" data-bs-toggle="tab" data-bs-target="#params"
+                    type="button" role="tab" aria-controls="params" aria-selected="true">Params</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="auth-tab" data-bs-toggle="tab" data-bs-target="#auth" type="button"
+                    role="tab" aria-controls="auth" aria-selected="false">Auth</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="headers-tab" data-bs-toggle="tab" data-bs-target="#headers" type="button"
+                    role="tab" aria-controls="body" aria-selected="false">Headers</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reqBody-tab" data-bs-toggle="tab" data-bs-target="#reqBody" type="button"
+                    role="tab" aria-controls="body" aria-selected="false">Axios Req Body</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+
+
+
+            <!-- 1.Params section -->
+            <div class="tab-pane show active" id="params" role="tabpanel" aria-labelledby="params-tab">
+
+                <!-- The first param -->
+                <div class=" container m-2" id="firstParam">
+                    <input type="text" placeholder="Key" class="styl-input paramKey" name="paramKey" id="firstParam">
+                    <input type="text" placeholder="Value" class="styl-input paramValue" name="paramValue">
+                </div>
+
+                <!-- Extra-new params container -->
+                <div id="newParamsContainer"></div>
+
+                <!-- Button to add new param -->
+                <a class="btn btn-outline-success m-3" id="addParamBtn">Add</a>
+
+            </div>
+
+
+
+            <!-- 2.Auth section -->
+            <div class="tab-pane" id="auth" role="tabpanel" aria-labelledby="auth-tab">
+
+                <!-- Select type of Auth -->
+                <select class="form-select" id="authTypeSelector" name="authType">
+                    <option selected value="none">None</option>
+                    <option value="basic">Basic</option>
+                    <option value="apikey">Api Key</option>
+                    <option value="bearer">Bearer Token</option>
+                </select>
+                <br>
+                <!-- Input field for auth -->
+                <input type="text" name="authInput1" id="authInput1" class="form-control">
+                <br>
+                <input type="text" name="auhtInput2" id="authInput2" class="form-control">
+
+                <!-- Api key selected means , display this -->
+                <br><select class="form-select" name="apikeyAuthtype" id="apikeyAuthType">
+                    <option selected value="addToHeader">Add to Header</option>
+                    <option value="addToQueryParams">Add to Query Params</option>
+                </select>
+
+
+            </div>
+
+
+
+            <!-- 3.Headers section -->
+            <div class="tab-pane" id="headers" role="tabpanel" aria-labelledby="headers-tab">
+
+                <!-- The first param -->
+                <div class=" container m-2" id="firstHeader">
+                    <input type="text" placeholder="Key" class="styl-input headerKey" name="headerKey">
+                    <input type="text" placeholder="Value" class="styl-input headerValue" name="headerValue">
+                </div>
+
+                <!-- Extra-new params container -->
+                <div id="newHeadersContainer"></div>
+
+                <!-- Button to add new param -->
+                <a class="btn btn-outline-success m-3" id="addHeaderBtn">Add</a>
+
+
+            </div>
+
+
+
+            <!-- Req Bodysection  -->
+            <div class="tab-pane" id="reqBody" role="tabpanel" aria-labelledby="reqBody-tab">
+                <textarea class="styl-input" cols="50" rows="10" id="axiosReqBody"
+                    placeholder="Enter Req body in JSON format"></textarea>
+            </div>
+
+        </div>
+
+
+    </form>
+
+    <!-- 2. Api params , body , auth section here -->
+
+    <!-- 3.JSON response display -->
+    <div class="json-displayer shadow" >
+        <pre id="displayingBody" >Make a request now</pre>
+    </div>
+
+    <!-- Bootrap & our script JS link -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
