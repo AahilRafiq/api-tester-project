@@ -82,9 +82,10 @@ async function apireqFunction(axiosConfig) {
 		const response = await axios(axiosConfig)
         resDisplayer.textContent = JSON.stringify(response.data,null,4)
         console.log(JSON.stringify(response.data,null,4));
-        // console.log(response.data);
 	}
 	catch(err){
+		const resDisplayer = document.getElementById('displayingBody')
+        	resDisplayer.textContent = err + " , look in console for error logs"
 		console.log(err) 
 	}
 }
